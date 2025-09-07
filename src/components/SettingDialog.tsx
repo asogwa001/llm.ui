@@ -212,14 +212,20 @@ const getSettingTabsConfiguration = (
             label: val.name,
             icon: val.icon,
           })
-        )
+        ), 
+        false,
+        true,
       ),
       toInput(
         SettingInputType.SHORT_INPUT,
         'baseUrl',
         !INFERENCE_PROVIDERS[config.provider]?.allowCustomBaseUrl
       ),
-      toInput(SettingInputType.SHORT_INPUT, 'apiKey'),
+      toInput(
+        SettingInputType.SHORT_INPUT,
+        'apiKey',
+        true
+      ),
       toDropdown(
         'model',
         models.map((m) => ({
