@@ -8,11 +8,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
+    
     permissions:
-      contents: write
+      contents: read
 
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,7 +24,10 @@ jobs:
           echo "Dispatched from ${{github.ref}} — skipping deploy"
           exit 1
 
-      - uses: actions/checkout@v4
+      - name: Checkout ui/edu.ai branch
+        uses: actions/checkout@v4
+        with:
+          ref: ui/edu.ai
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -42,8 +45,29 @@ jobs:
       - name: Build
         run: npm run build:prod -- --base=/${{ env.basePath }}
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          path: ./dist
+
+  deploy:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
