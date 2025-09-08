@@ -13,7 +13,7 @@ export const CONFIG_DEFAULT: Readonly<Configuration> = Object.freeze({
   // Note: in order not to introduce breaking changes, please keep the same data type (number, string, etc) if you want to change the default value. Do not use null or undefined for default value.
   // Do not use nested objects, keep it single level. Prefix the key if you need to group them.
   provider: 'edu-ai',
-  baseUrl: 'https://api.edu.ai/v1',
+  baseUrl: 'http://34.250.146.45',
   apiKey: '<API_KEY>',
   model: 'akili-tool',
   systemMessage: '',
@@ -166,7 +166,7 @@ export const SYNTAX_THEMES = Object.freeze([
 // list of inference providers
 export const INFERENCE_PROVIDERS: Readonly<InferenceProviders> = Object.freeze({
   'edu-ai': {
-    baseUrl: 'http://localhost:8080',
+    baseUrl: 'http://34.250.146.45',
     name: 'EDU.ai',
     icon: 'assets/providers/llamacpp.svg',
     allowCustomBaseUrl: false,
