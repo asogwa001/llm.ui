@@ -128,6 +128,7 @@ type SettingField =
 interface SettingTab {
   title: React.ReactElement;
   fields: SettingField[];
+  disabled?: boolean;
 }
 
 // --- Helper Functions ---
@@ -212,20 +213,16 @@ const getSettingTabsConfiguration = (
             label: val.name,
             icon: val.icon,
           })
-        ), 
+        ),
         false,
-        true,
+        true
       ),
       toInput(
         SettingInputType.SHORT_INPUT,
         'baseUrl',
         !INFERENCE_PROVIDERS[config.provider]?.allowCustomBaseUrl
       ),
-      toInput(
-        SettingInputType.SHORT_INPUT,
-        'apiKey',
-        true
-      ),
+      toInput(SettingInputType.SHORT_INPUT, 'apiKey', true),
       toDropdown(
         'model',
         models.map((m) => ({
@@ -244,6 +241,7 @@ const getSettingTabsConfiguration = (
       DELIMETER,
       toInput(SettingInputType.LONG_INPUT, 'systemMessage'),
     ],
+    disabled: false,
   },
 
   /* UI */
@@ -262,6 +260,7 @@ const getSettingTabsConfiguration = (
         component: UnusedCustomField,
       },
     ],
+    disabled: false,
   },
 
   /* Voice */
@@ -346,6 +345,7 @@ const getSettingTabsConfiguration = (
         ),
       },
     ],
+    disabled: true,
   },
 
   /* Conversations */
@@ -378,6 +378,7 @@ const getSettingTabsConfiguration = (
       toInput(SettingInputType.CHECKBOX, 'showThoughtInProgress'),
       toInput(SettingInputType.CHECKBOX, 'excludeThoughtOnReq'),
     ],
+    disabled: true,
   },
 
   /* Presets */
@@ -395,6 +396,7 @@ const getSettingTabsConfiguration = (
         component: UnusedCustomField,
       },
     ],
+    disabled: true,
   },
 
   /* Import/Export */
@@ -412,6 +414,7 @@ const getSettingTabsConfiguration = (
         component: UnusedCustomField,
       },
     ],
+    disabled: true,
   },
 
   /* Advanced */
@@ -491,6 +494,7 @@ const getSettingTabsConfiguration = (
         key: 'custom',
       },
     ],
+    disabled: true,
   },
 
   /* Experimental */
@@ -543,6 +547,7 @@ const getSettingTabsConfiguration = (
         key: 'pyIntepreterEnabled',
       },
     ],
+    disabled: true,
   },
 ];
 
@@ -667,7 +672,7 @@ export default function SettingDialog({
             aria-description="Settings sections"
             tabIndex={0}
           >
-            {settingTabs.map((tab, idx) => (
+            {/* {settingTabs.map((tab, idx) => (
               <button
                 key={idx}
                 className={classNames({
@@ -675,6 +680,24 @@ export default function SettingDialog({
                   'btn-active': tabIdx === idx,
                 })}
                 onClick={() => setTabIdx(idx)}
+                dir="auto"
+              >
+                {tab.title}
+              </button>
+            ))} */}
+
+            {settingTabs.map((tab, idx) => (
+              <button
+                key={idx}
+                className={classNames({
+                  'btn btn-ghost justify-start font-normal w-44 mb-1': true,
+                  'btn-active': tabIdx === idx,
+                  'opacity-75 cursor-not-allowed': tab.disabled === true,
+                })}
+                onClick={() => {
+                  if (!tab.disabled) setTabIdx(idx);
+                }}
+                disabled={tab.disabled} // disables keyboard focus & click
                 dir="auto"
               >
                 {tab.title}
@@ -1027,7 +1050,9 @@ const SettingsModalDropdown: React.FC<
     </span>
   );
 
-  const disabled = useMemo(() => options.length < 2, [options]);
+  //const disabled = useMemo(() => options.length < 2, [options]);
+  const disabled = useMemo(() => field.disabled || options.length < 2, [field.disabled, options]);
+
   const selectedValue = useMemo(() => {
     const selectedOption = options.find((option) => option.value === value);
     return selectedOption ? (
@@ -1070,7 +1095,12 @@ const SettingsModalDropdown: React.FC<
           currentValue={selectedValue}
           renderOption={renderOption}
           isSelected={(option) => value === option.value}
-          onSelect={(option) => onChange(option.value)}
+          //onSelect={(option) => onChange(option.value)}
+          onSelect={(option) => {
+            if (!disabled) {
+              onChange(option.value);
+            }
+          }}
         />
       </label>
 
