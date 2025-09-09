@@ -168,7 +168,7 @@ export const INFERENCE_PROVIDERS: Readonly<InferenceProviders> = Object.freeze({
   'edu-ai': {
     baseUrl: 'http://34.250.146.45',
     name: 'EDU.ai',
-    icon: 'assets/providers/llamacpp.svg',
+    icon: 'assets/providers/edu.ai.svg',
     allowCustomBaseUrl: false,
     isKeyRequired: false,
   },
