@@ -2,10 +2,8 @@ name: Deploy
 
 on:
   push:
-    tags:
-      - '**'
-
-  workflow_dispatch:
+    branches:
+      - ui/edu.ai
 
 jobs:
   build:
@@ -14,20 +12,9 @@ jobs:
     permissions:
       contents: read
 
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-
     steps:
-      - name: Skip for non-tagged refs
-        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          echo "Dispatched from ${{github.ref}} — skipping deploy"
-          exit 1
-
-      - name: Checkout ui/edu.ai branch
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ui/edu.ai
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -39,7 +26,6 @@ jobs:
         run: npm ci
 
       - name: Set basePath variable
-        id: vars
         run: echo "basePath=${{ github.event.repository.name }}" >> $GITHUB_ENV
 
       - name: Build
@@ -52,7 +38,6 @@ jobs:
 
   deploy:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/')
     
     permissions:
       pages: write
@@ -63,9 +48,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     runs-on: ubuntu-latest
-    
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
       
     steps:
       - name: Deploy to GitHub Pages
