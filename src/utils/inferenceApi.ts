@@ -214,7 +214,6 @@ async function* getSSEStreamAsync(fetchResponse: Response) {
   }
 }
 
-
 // async function* getSSEStreamAsync(fetchResponse: Response) {
 //   if (!fetchResponse.body) throw new Error('Response body is empty');
 
