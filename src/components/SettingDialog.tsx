@@ -1051,7 +1051,10 @@ const SettingsModalDropdown: React.FC<
   );
 
   //const disabled = useMemo(() => options.length < 2, [options]);
-  const disabled = useMemo(() => field.disabled || options.length < 2, [field.disabled, options]);
+  const disabled = useMemo(
+    () => field.disabled || options.length < 2,
+    [field.disabled, options]
+  );
 
   const selectedValue = useMemo(() => {
     const selectedOption = options.find((option) => option.value === value);
