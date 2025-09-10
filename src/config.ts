@@ -166,7 +166,7 @@ export const SYNTAX_THEMES = Object.freeze([
 // list of inference providers
 export const INFERENCE_PROVIDERS: Readonly<InferenceProviders> = Object.freeze({
   'edu-ai': {
-    baseUrl: 'http://34.250.146.45',
+    baseUrl: 'https://34.250.146.45',
     name: 'EDU.ai',
     icon: 'assets/providers/edu.ai.svg',
     allowCustomBaseUrl: false,
