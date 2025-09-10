@@ -305,11 +305,11 @@ export const INFERENCE_PROVIDERS: Readonly<InferenceProviders> = Object.freeze({
   //   allowCustomBaseUrl: false,
   //   isKeyRequired: true,
   // },
-  custom: {
-    baseUrl: 'https://api.custom.com',
-    name: 'OpenAI Compatible',
-    icon: '',
-    allowCustomBaseUrl: true,
-    isKeyRequired: false,
-  },
+  // custom: {
+  //   baseUrl: 'https://api.custom.com',
+  //   name: 'OpenAI Compatible',
+  //   icon: '',
+  //   allowCustomBaseUrl: true,
+  //   isKeyRequired: false,
+  // },
 });
