@@ -214,6 +214,54 @@ async function* getSSEStreamAsync(fetchResponse: Response) {
   }
 }
 
+
+// async function* getSSEStreamAsync(fetchResponse: Response) {
+//   if (!fetchResponse.body) throw new Error('Response body is empty');
+
+//   const lines: ReadableStream<string> = fetchResponse.body
+//     .pipeThrough(new TextDecoderStream())
+//     .pipeThrough(new TextLineStream());
+
+//   // @ts-expect-error asyncIterator complains about type, but it should work
+//   for await (const line of asyncIterator(lines)) {
+//     if (!line.trim()) continue;
+
+//     // 💡 Split in case multiple data: lines are accidentally joined together
+//     const parts = line.split(/(?=^data:)/gm); // split on every new `data:` prefix
+
+//     for (const part of parts) {
+//       if (part.startsWith('data:')) {
+//         const rawJson = part.slice(5).trim();
+
+//         if (rawJson === '[DONE]') {
+//           console.debug('SSE stream ended with [DONE]');
+//           return;
+//         }
+
+//         console.debug('Parsed SSE Line (before JSON):', rawJson);
+
+//         try {
+//           const data = JSON.parse(rawJson);
+//           yield data;
+//         } catch (err) {
+//           console.error('JSON parse error:', err, '\nRaw line:', rawJson);
+//           throw new Error(
+//             `Failed to parse SSE data as JSON: ${rawJson}\n\n${(err as Error).message}`
+//           );
+//         }
+//       } else if (part.startsWith('error:')) {
+//         const rawError = part.slice(6).trim();
+//         try {
+//           const errorData = JSON.parse(rawError);
+//           throw new Error(errorData.message || 'Unknown error');
+//         } catch {
+//           throw new Error(`Invalid error format: ${rawError}`);
+//         }
+//       }
+//     }
+//   }
+// }
+
 const noResponse = new Response(null, { status: 444 });
 
 // --- Main Inference API Functions ---
