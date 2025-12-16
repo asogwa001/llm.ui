@@ -98,19 +98,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        // Make the name hash based so that browswer does not cache it
-        //
-        
-        // entryFileNames: `assets/[name]-[hash].js`,
-        // chunkFileNames: `assets/[name].js`,
-        // assetFileNames: function (file) {
-        //   return file.names.some((name) => name.includes('css'))
-        //     ? `assets/[name]-[hash].[ext]`
-        //     : `assets/[name].[ext]`;
-        // },
         entryFileNames: `assets/[name]-[hash].js`,
-        chunkFileNames: `assets/[name]-[hash].js`,
-        assetFileNames: `assets/[name]-[hash].[ext]`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: function (file) {
+          return file.names.some((name) => name.includes('css'))
+            ? `assets/[name]-[hash].[ext]`
+            : `assets/[name].[ext]`;
+        },
         manualChunks: {
           katex: ['katex'],
           'pdfjs-dist': ['pdfjs-dist'],
