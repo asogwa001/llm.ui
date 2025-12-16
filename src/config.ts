@@ -13,7 +13,7 @@ export const CONFIG_DEFAULT: Readonly<Configuration> = Object.freeze({
   // Note: in order not to introduce breaking changes, please keep the same data type (number, string, etc) if you want to change the default value. Do not use null or undefined for default value.
   // Do not use nested objects, keep it single level. Prefix the key if you need to group them.
   provider: 'edu-ai',
-  baseUrl: 'https://asogwa001.duckdns.org',
+  baseUrl: 'https://eduai.tooling.com.ng/',
   apiKey: '<API_KEY>',
   model: 'akili-tool',
   systemMessage: '',
@@ -166,7 +166,7 @@ export const SYNTAX_THEMES = Object.freeze([
 // list of inference providers
 export const INFERENCE_PROVIDERS: Readonly<InferenceProviders> = Object.freeze({
   'edu-ai': {
-    baseUrl: 'https://asogwa001.duckdns.org',
+    baseUrl: 'https://eduai.tooling.com.ng/',
     name: 'EDU.ai',
     icon: 'assets/providers/edu.ai.svg',
     allowCustomBaseUrl: false,
